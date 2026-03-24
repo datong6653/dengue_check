@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>115年度登革熱病媒蚊孳生源密度調查裝備檢視表</title>
+<title>115年登革熱社區密調裝備調查表</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 
@@ -110,6 +111,31 @@ main {
   align-items: center;
   flex: 0 0 auto;
   white-space: nowrap;
+}
+
+/* ✅ 手機版：改為上下排列，radio 靠左，need-count 正常顯示 */
+@media (max-width: 640px) {
+  .item-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .item-row > div:first-child {
+    width: 100%;
+  }
+
+  .option-group {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    white-space: normal;
+  }
+
+  .need-count-container {
+    margin-top: 0.25rem;
+    width: 100%;
+  }
 }
 
 .radio-label {
@@ -222,26 +248,26 @@ main {
 <body class="pb-20">
 
 <header class="gov-header">
-  <h1 class="gov-title"> 115年登革熱社區密調裝備調查表 </h1>
+  <h1 class="gov-title"> 115年登革熱社區密調裝備調查表</h1>
   <p class="text-sm opacity-90">Dengue Prevention Resource Management System</p>
 </header>
 
 <main class="max-w-4xl mx-auto px-4">
 
   <section class="admin-card p-6">
-    <span class="section-tag">填寫人員</span>
+    <span class="section-tag">請先填選組別及姓名</span>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
-        <label class="block font-bold mb-2">行政業務組別：</label>
+        <label class="block font-bold mb-2">組別：</label>
         <select id="group-select" class="w-full border border-slate-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-700" onchange="updateNames()">
           <option value="">-- 請選擇 --</option>
           <option value="防疫組">防疫組</option>
-          <option value="公衛組">公衛組(每人安排2里次與校園1家次，共3次。)</option>
-          <option value="心衛組">心衛、優保組(當年度需要完成至少1里次。)</option>
+          <option value="公衛組">公衛組</option>
+          <option value="心衛組">心衛、優保組</option>
         </select>
       </div>
       <div>
-        <label class="block font-bold mb-2">同仁姓名：</label>
+        <label class="block font-bold mb-2">姓名：</label>
         <select id="name-select" class="w-full border border-slate-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-700" onchange="updateSummary()">
           <option value="">-- 請選擇 --</option>
         </select>
@@ -251,7 +277,7 @@ main {
 
   <!-- 程序二：資材點檢 -->
   <section class="admin-card p-6">
-    <span class="section-tag">◆◆ 相關文件 ◆◆</span>
+    <span class="section-tag"> ◆◆ 相關文件 ◆◆</span>
     <div class="space-y-2">
 
       <div class="item-row" data-item="*傳染病源改善通知單">
@@ -304,7 +330,7 @@ main {
 
     </div>
 
-    <span class="section-tag mt-8">◆◆ 密 調 裝 備 ◆◆</span>
+    <span class="section-tag mt-8"> ◆◆ 密 調 裝 備 ◆◆</span>
     <div class="space-y-1" id="equip-container">
       <!-- 由 JS 生成項目 -->
     </div>
@@ -312,7 +338,7 @@ main {
 
   <!-- 程序三：彙整表 -->
   <section class="admin-card p-6 bg-slate-50 border-blue-900">
-    <span class="section-tag bg-amber-700">裝備文件需求彙整表</span>
+    <span class="section-tag bg-amber-700"> 裝備文件需求彙整表</span>
     <table class="summary-table">
       <thead>
         <tr><th>品項名稱</th><th>現況</th><th>需求增補</th></tr>
@@ -347,7 +373,7 @@ main {
 const groupData = {
   "防疫組": ["林明憲 6653", "陳彥容 6657", "王思涵 6656"],
   "公衛組": ["王虹雅 6633", "羅毓婉 6665", "葉智婷 6638", "林湘玲 6652", "林靖雯 6655", "趙佩儀 6658", "陳家瑋 6651", "蔡雅安 6639", "吳恩綺 6637", "游蕙慈 6636", "張雁茹 6659", "楊晴喬 6662"],
-  "心衛組": ["簡詠禾 6635", "張旖庭 6670", "翁偉翔 6606", "江婕妘 6621", "徐群逸 6687", "王品莉 6619"]
+  "心衛、優保組": ["簡詠禾 6635", "張旖庭 6670", "翁偉翔 6606", "江婕妘 6621", "徐群逸 6687", "王品莉 6619"]
 };
 
 const equipList = [
@@ -467,7 +493,7 @@ async function handleFinalSubmit() {
 
   btn.disabled = false;
   spinner.style.display = 'none';
-  btnText.textContent = '填好了，確認送出。';
+  btnText.textContent = '確認送出點檢資料 (儲存至雲端)';
 }
 
 function showDocPreview(key) {
