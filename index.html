@@ -471,9 +471,13 @@ async function handleFinalSubmit() {
 }
 
 function showDocPreview(key) {
+  const imgMap = {
+    '改善通知單':  'doc1.jpg',
+    '舉發通知書':  'doc2.jpg',
+    '請假證明書':  'doc3.jpg'
+  };
   document.getElementById('preview-title').textContent = "核對最新版本樣張：" + key;
-  document.getElementById('preview-image').src = `https://placehold.co/400x550?text=${encodeURIComponent(key)}%0A(最新版)`;
-  // ✅ Bug 3 修正：用 inline style flex 取代移除 hidden class
+  document.getElementById('preview-image').src = imgMap[key] || '';
   document.getElementById('preview-modal').style.display = 'flex';
 }
 
