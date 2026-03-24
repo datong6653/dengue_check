@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>115年度登革熱病媒蚊孳生源密度調查裝備檢視表</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<script>
+const GAS_URL = "https://script.google.com/macros/s/AKfycby05SesQy_63l-et9KaonebRd9O28lbkibBxRtHiNLVKKfQjSAsIPGi0EcXKVHfrHni1A/exec";
+
+window.submitToCloud = async (data) => {
+  try {
+    // Google Apps Script 不支援 CORS preflight，需用 no-cors mode
+    await fetch(GAS_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+    // no-cors 模式下無法讀取回應，只要不丟出例外就視為成功
+    return true;
+  } catch (error) {
+    console.error("送出失敗：", error);
+    return false;
+  }
+};
+</script>
+
+<style>
+:root {
+  --gov-blue: #1e3a8a;
+  --gov-gold: #b45309;
+  --gov-border: #cbd5e1;
+}
+
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background-color: #f1f5f9;
+  color: #1e293b;
+  line-height: 1.6;
+}
+
+/* 確保桌機版內容區寬度正確填滿 */
+main {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.gov-header {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-bottom: 5px solid var(--gov-gold);
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.gov-title {
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 0.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.admin-card {
+  background: #ffffff;
+  border: 1px solid var(--gov-border);
+  border-left: 6px solid var(--gov-blue);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+}
+
+.section-tag {
+  background-color: var(--gov-blue);
+  color: white;
+  padding: 4px 12px;
+  font-size: 0.875rem;
+  font-weight: bold;
+  border-radius: 2px;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.item-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 0;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.item-row:last-child { border-bottom: none; }
+
+/* 品項名稱區：可縮放但不溢出 */
+.item-row > div:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* radio 群組：固定在右側、絕不換行 */
+.option-group {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: 700;
+  color: #475569;
+}
+
+.radio-label input[type="radio"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: var(--gov-blue);
+}
+
+.need-count-container {
+  margin-top: 0.5rem;
+  padding: 6px 10px;
+  border-left: 3px solid var(--gov-gold);
+  background-color: #fffbeb;
+  /* ✅ Bug 2 修正：移除 CSS display:none，改由 JS 統一以 inline style 控制，避免優先權衝突 */
+}
+
+.need-count-input {
+  border: 1px solid #d1d5db;
+  padding: 2px 8px;
+  border-radius: 4px;
+  width: 70px;
+}
+
+.preview-link {
+  font-size: 0.75rem;
+  color: var(--gov-blue);
+  text-decoration: underline;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.new-version-badge {
+  background-color: #ef4444;
+  color: white;
+  padding: 1px 6px;
+  font-size: 0.65rem;
+  border-radius: 4px;
+  font-weight: 900;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.summary-table th, .summary-table td {
+  border: 1px solid #e2e8f0;
+  padding: 10px;
+  text-align: left;
+}
+
+.summary-table th {
+  background-color: #f8fafc;
+  color: var(--gov-blue);
+}
+
+.status-pill {
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.status-ok   { background: #dcfce7; color: #166534; }
+.status-lack { background: #fee2e2; color: #991b1b; }
+
+.btn-submit {
+  background-color: var(--gov-blue);
+  color: white;
+  padding: 1rem;
+  font-weight: 700;
+  font-size: 1.25rem;
+  border-radius: 4px;
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-submit:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body class="pb-20">
+
+<header class="gov-header">
+  <h1 class="gov-title">115年度 登革熱防疫量能與裝備整備系統 (雲端同步版)</h1>
+  <p class="text-sm opacity-90">Dengue Prevention Resource Management System</p>
+</header>
+
+<main class="max-w-4xl mx-auto px-4">
+
+  <section class="admin-card p-6">
+    <span class="section-tag">程序一：登錄填報人員</span>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label class="block font-bold mb-2">行政業務組別：</label>
+        <select id="group-select" class="w-full border border-slate-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-700" onchange="updateNames()">
+          <option value="">-- 請選擇 --</option>
+          <option value="防疫組">防疫組</option>
+          <option value="公衛組">公衛組</option>
+          <option value="心衛組">心衛、優保組</option>
+        </select>
+      </div>
+      <div>
+        <label class="block font-bold mb-2">同仁姓名：</label>
+        <select id="name-select" class="w-full border border-slate-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-700" onchange="updateSummary()">
+          <option value="">-- 請選擇 --</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- 程序二：資材點檢 -->
+  <section class="admin-card p-6">
+    <span class="section-tag">程序二：◆◆ 相關文件 ◆◆</span>
+    <div class="space-y-2">
+
+      <div class="item-row" data-item="*傳染病源改善通知單">
+        <div>
+          <span class="new-version-badge">最新修正版</span>
+          <span class="font-bold text-lg">傳染病源改善通知單</span>
+          <span class="preview-link" onclick="showDocPreview('改善通知單')">👁️ 檢視樣張</span>
+        </div>
+        <div class="option-group">
+          <label class="radio-label"><input type="radio" name="doc1" value="有" checked onclick="handleToggle('doc1', false)"> 有</label>
+          <label class="radio-label"><input type="radio" name="doc1" value="無" onclick="handleToggle('doc1', true)"> 無</label>
+          <div class="need-count-container" id="count-doc1" style="display:none;"><input type="number" class="need-count-input" value="0" oninput="updateSummary()"> 份</div>
+        </div>
+      </div>
+
+      <div class="item-row" data-item="*案件舉發暨陳述意見通知書">
+        <div>
+          <span class="new-version-badge">最新修正版</span>
+          <span class="font-bold text-lg">案件舉發暨陳述意見通知書</span>
+          <span class="preview-link" onclick="showDocPreview('舉發通知書')">👁️ 檢視樣張</span>
+        </div>
+        <div class="option-group">
+          <label class="radio-label"><input type="radio" name="doc2" value="有" checked onclick="handleToggle('doc2', false)"> 有</label>
+          <label class="radio-label"><input type="radio" name="doc2" value="無" onclick="handleToggle('doc2', true)"> 無</label>
+          <div class="need-count-container" id="count-doc2" style="display:none;"><input type="number" class="need-count-input" value="0" oninput="updateSummary()"> 份</div>
+        </div>
+      </div>
+
+      <div class="item-row" data-item="*請假證明">
+        <div>
+          <span class="new-version-badge">最新修正版</span>
+          <span class="font-bold text-lg">請假證明</span>
+          <span class="preview-link" onclick="showDocPreview('請假證明書')">👁️ 檢視樣張</span>
+        </div>
+        <div class="option-group">
+          <label class="radio-label"><input type="radio" name="doc3" value="有" checked onclick="handleToggle('doc3', false)"> 有</label>
+          <label class="radio-label"><input type="radio" name="doc3" value="無" onclick="handleToggle('doc3', true)"> 無</label>
+          <div class="need-count-container" id="count-doc3" style="display:none;"><input type="number" class="need-count-input" value="0" oninput="updateSummary()"> 份</div>
+        </div>
+      </div>
+
+      <div class="item-row" data-item="密度調查紀錄表">
+        <div><span class="font-bold text-lg">密度調查紀錄表</span></div>
+        <div class="option-group">
+          <label class="radio-label"><input type="radio" name="doc4" value="有" checked onclick="handleToggle('doc4', false)"> 有</label>
+          <label class="radio-label"><input type="radio" name="doc4" value="無" onclick="handleToggle('doc4', true)"> 無</label>
+          <div class="need-count-container" id="count-doc4" style="display:none;"><input type="number" class="need-count-input" value="0" oninput="updateSummary()"> 份</div>
+        </div>
+      </div>
+
+    </div>
+
+    <span class="section-tag mt-8">程序二：◆◆ 密 調 裝 備 ◆◆</span>
+    <div class="space-y-1" id="equip-container">
+      <!-- 由 JS 生成項目 -->
+    </div>
+  </section>
+
+  <!-- 程序三：彙整表 -->
+  <section class="admin-card p-6 bg-slate-50 border-blue-900">
+    <span class="section-tag bg-amber-700">程序三：整備清單總彙整</span>
+    <table class="summary-table">
+      <thead>
+        <tr><th>品項名稱</th><th>現況</th><th>需求增補</th></tr>
+      </thead>
+      <tbody id="summary-body"></tbody>
+    </table>
+    <button id="submit-btn" class="btn-submit mt-6 bg-blue-900 hover:bg-blue-800 transition" onclick="handleFinalSubmit()">
+      <!-- ✅ Bug 2 修正：spinner 改用 inline style 初始隱藏，由 JS 統一控制 -->
+      <div id="btn-spinner" class="spinner" style="display:none;"></div>
+      <span id="btn-text">確認送出點檢資料 (儲存至雲端)</span>
+    </button>
+  </section>
+
+</main>
+
+<!-- ✅ Bug 3 修正：預覽 Modal 改用 inline style 控制顯示，避免 Tailwind hidden + flex 優先權衝突 -->
+<div id="preview-modal" class="fixed inset-0 bg-black bg-opacity-90 items-center justify-center p-4 z-[100]" style="display:none;">
+  <div class="bg-white rounded-lg overflow-hidden max-w-xl w-full">
+    <div class="p-4 border-b flex justify-between items-center bg-slate-100">
+      <h4 id="preview-title" class="font-black"></h4>
+      <button onclick="closeDocPreview()" class="text-2xl font-bold px-2">×</button>
+    </div>
+    <div class="p-4 bg-slate-200">
+      <div class="bg-white p-2 border shadow-inner text-center">
+        <img id="preview-image" src="" class="max-w-full h-auto mx-auto" alt="預覽圖片">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const groupData = {
+  "防疫組": ["林明憲 6653", "陳彥容 6657", "王思涵 6656"],
+  "公衛組": ["王虹雅 6633", "羅毓婉 6665", "葉智婷 6638", "林湘玲 6652", "林靖雯 6655", "趙佩儀 6658", "陳家瑋 6651", "蔡雅安 6639", "吳恩綺 6637", "游蕙慈 6636", "張雁茹 6659", "楊晴喬 6662"],
+  "心衛組": ["簡詠禾 6635", "張旖庭 6670", "翁偉翔 6606", "江婕妘 6621", "徐群逸 6687", "王品莉 6619"]
+};
+
+const equipList = [
+  "防蚊液", "清潔刷", "環境用藥(蘇力菌、百利普芬)", "防曬用品-雨具",
+  "防曬用品-防曬帽", "手電筒", "濾網杓 (過濾孑孓用)", "折疊式水勺",
+  "採樣瓶 (裝孑孓專用)", "標籤紙", "吸管(小) (吸孑孓用)", "吸管(大) (吸孑孓用)",
+  "橡膠手套", "布手套"
+];
+
+function initEquipItems() {
+  const container = document.getElementById('equip-container');
+  equipList.forEach((item, index) => {
+    const div = document.createElement('div');
+    div.className = 'item-row';
+    div.setAttribute('data-item', item);
+    // ✅ Bug 2 & 4 修正：need-count-container 初始以 inline style display:none 隱藏
+    div.innerHTML = `
+      <div><span class="font-bold text-lg">${item}</span></div>
+      <div class="option-group">
+        <label class="radio-label"><input type="radio" name="eq${index}" value="有" checked onclick="handleToggle('eq${index}', false)"> 有</label>
+        <label class="radio-label"><input type="radio" name="eq${index}" value="無" onclick="handleToggle('eq${index}', true)"> 無</label>
+        <div class="need-count-container" id="count-eq${index}" style="display:none;"><input type="number" class="need-count-input" value="0" oninput="updateSummary()"> 個</div>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function updateNames() {
+  const group = document.getElementById('group-select').value;
+  const nameSelect = document.getElementById('name-select');
+  nameSelect.innerHTML = '<option value="">-- 請選擇 --</option>';
+  if (group && groupData[group]) {
+    groupData[group].forEach(n => {
+      const opt = document.createElement('option');
+      opt.value = n;
+      opt.textContent = n;
+      nameSelect.appendChild(opt);
+    });
+  }
+  updateSummary();
+}
+
+function handleToggle(id, isLack) {
+  const box = document.getElementById('count-' + id);
+  if (box) {
+    // ✅ Bug 2 修正：統一用 inline style 控制，不依賴 CSS class
+    box.style.display = isLack ? 'inline-block' : 'none';
+    if (!isLack) box.querySelector('input').value = 0;
+  }
+  updateSummary();
+}
+
+function updateSummary() {
+  const body = document.getElementById('summary-body');
+  body.innerHTML = '';
+  document.querySelectorAll('.item-row').forEach(row => {
+    const name = row.getAttribute('data-item');
+    const checked = row.querySelector('input[type="radio"]:checked');
+    const radioValue = checked ? checked.value : '有';
+    const countInput = row.querySelector('.need-count-input');
+    const count = countInput ? countInput.value : 0;
+    const tr = document.createElement('tr');
+    const sClass = radioValue === '有' ? 'status-ok' : 'status-lack';
+    tr.innerHTML = `
+      <td>${name}</td>
+      <td><span class="status-pill ${sClass}">${radioValue}</span></td>
+      <td class="font-bold text-amber-700">${radioValue === '無' ? count : '-'}</td>
+    `;
+    body.appendChild(tr);
+  });
+}
+
+async function handleFinalSubmit() {
+  const group = document.getElementById('group-select').value;
+  const name  = document.getElementById('name-select').value;
+  const btn     = document.getElementById('submit-btn');
+  const spinner = document.getElementById('btn-spinner');
+  const btnText = document.getElementById('btn-text');
+
+  if (!group || !name) {
+    alert("【系統提示】請先選取組別與同仁姓名，以利資料歸戶。");
+    return;
+  }
+
+  const records = [];
+  document.querySelectorAll('.item-row').forEach(row => {
+    const checked = row.querySelector('input[type="radio"]:checked');
+    const countInput = row.querySelector('.need-count-input');
+    records.push({
+      item:   row.getAttribute('data-item'),
+      status: checked ? checked.value : '有',
+      needed: countInput ? countInput.value : 0
+    });
+  });
+
+  const formData = {
+    reporterGroup: group,
+    reporterName:  name,
+    items:         records,
+    version:       "V1-Cloud",
+    secret:        "@@Com072"
+  };
+
+  btn.disabled = true;
+  // ✅ Bug 2 修正：統一用 inline style 顯示/隱藏 spinner
+  spinner.style.display = 'block';
+  btnText.textContent = '上傳中...';
+
+  const success = await window.submitToCloud(formData);
+
+  if (success) {
+    alert("🎉 整備資料已成功同步至雲端數據庫！");
+  } else {
+    alert("❌ 上傳失敗，請檢查網路連線或稍後再試。");
+  }
+
+  btn.disabled = false;
+  spinner.style.display = 'none';
+  btnText.textContent = '確認送出點檢資料 (儲存至雲端)';
+}
+
+function showDocPreview(key) {
+  document.getElementById('preview-title').textContent = "核對最新版本樣張：" + key;
+  document.getElementById('preview-image').src = `https://placehold.co/400x550?text=${encodeURIComponent(key)}%0A(最新版)`;
+  // ✅ Bug 3 修正：用 inline style flex 取代移除 hidden class
+  document.getElementById('preview-modal').style.display = 'flex';
+}
+
+function closeDocPreview() {
+  document.getElementById('preview-modal').style.display = 'none';
+}
+
+window.onload = () => {
+  initEquipItems();
+  // ✅ Bug 4 修正：頁面載入後同步初始化所有 need-count-container 的顯示狀態
+  document.querySelectorAll('.item-row').forEach(row => {
+    const checked = row.querySelector('input[type="radio"]:checked');
+    if (checked) {
+      const name = checked.name;
+      const box = document.getElementById('count-' + name);
+      if (box) box.style.display = checked.value === '無' ? 'inline-block' : 'none';
+    }
+  });
+  updateSummary();
+};
+</script>
+</body>
+</html>
